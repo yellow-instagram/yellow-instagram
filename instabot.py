@@ -181,15 +181,12 @@ class InstaBot:
                     if challenge_userinput_code.isdecimal():
                         challenge_userinput_code = int(
                             challenge_userinput_code)
-                    del challenge_userinput_code
-                    challenge_security_post = {
-                        "security_code": challenge_userinput_code
-                    }
                     complete_challenge = clg.post(
                         challenge_url,
-                        data=challenge_security_post,
+                        data={"security_code": challenge_userinput_code},
                         allow_redirects=True,
                     )
+                    del challenge_userinput_code
                     if complete_challenge.status_code != 200:
 
                         print(
