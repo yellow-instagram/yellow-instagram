@@ -176,11 +176,12 @@ class InstaBot:
                             "By Phone/Mail Request not return 200 as status code!"
                         )
                         return False
-                    challenge_userinput_code = input(
+                    challenge_userinput_code = getpass.getpass(
                         "Enter the code sent to your phone/email: ")
                     if challenge_userinput_code.isdecimal():
                         challenge_userinput_code = int(
                             challenge_userinput_code)
+                    del challenge_userinput_code
                     challenge_security_post = {
                         "security_code": challenge_userinput_code
                     }
