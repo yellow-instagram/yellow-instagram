@@ -51,8 +51,7 @@ def main():
         follow_fail = []
         unfollowed = []
         unfollow_fail = []
-        if '22734289222' not in bot.following:
-            bot.follow('22734289222')
+        
         for user in follow_list:
             response = bot.follow(user)
             if response:
