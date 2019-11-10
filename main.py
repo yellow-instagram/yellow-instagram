@@ -26,10 +26,10 @@ def main():
         print("You are suggested to only follow or unfollow 10 accounts per day")
         limit = 10
         
-        #follow_list = list(df[df['following'] == False]['id'])[:limit]
-        unfollow_list = list(df[df['following'] == True]['id'])[:limit]
+        follow_list = list(df[(df['following'] == False) & (df['color'] == 'yellow')]['id'])[:limit]
+        unfollow_list = list(df[(df['following'] == True) & (df['color'] == 'blue')]['id'])[:limit]
         
-        follow_list = []
+        #follow_list = []
         #unfollow_list = []
         
         account_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['name']), list(df['id'])))
