@@ -29,9 +29,6 @@ def main():
         follow_list = list(df[(df['following'] == False) & (df['color'] == 'yellow')]['id'])[:limit]
         unfollow_list = list(df[(df['following'] == True) & (df['color'] == 'blue')]['id'])[:limit]
         
-        #follow_list = []
-        #unfollow_list = []
-        
         account_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['name']), list(df['id'])))
         
         print("\n----------------------------CHECK----------------------------\n")
