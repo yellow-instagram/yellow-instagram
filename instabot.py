@@ -4,6 +4,7 @@ import re
 import time
 import requests
 import getpass
+import string
 
 
 class InstaBot:
@@ -83,12 +84,7 @@ class InstaBot:
             "XMLHttpRequest",
         })
         try:
-            r = self.s.get(self.url_auth)
-            if r.status_code != 200:
-                print(func_name, "-->", f"{r}",
-                      "Get Token Request not return 200 as status code!")
-                return False
-            csrf_token = re.search('(?<="csrf_token":")\w+', r.text).group(0)
+            csrf_token = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
             self.s.headers.update({"X-CSRFToken": csrf_token})
             time.sleep(5 * random.random())
             username = input("Enter your IG username: ")
