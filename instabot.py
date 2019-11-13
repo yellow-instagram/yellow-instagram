@@ -10,7 +10,6 @@ import string
 class InstaBot:
     """
     Instabot.py
-
     """
     url_following_token = "d04b0a864b4b54837c0d870b0e77e076"
     url_username_token = "7c16654f22c819fb63d1183034a5162f"
@@ -18,7 +17,7 @@ class InstaBot:
     url_following = 'https://www.instagram.com/graphql/query/?query_hash=%s&variables={"id":"%s","first":50,"after":"%s"}'
     url_username = 'https://www.instagram.com/graphql/query?query_hash=%s&variables={"user_id":"%s","include_reel":true}'
 
-    url = "https://www.instagram.com/"
+    url = "https://www.instagram.com"
     url_auth = "https://www.instagram.com/accounts/login/?source=auth_switcher"
     url_follow = "https://www.instagram.com/web/friendships/%s/follow/"
     url_unfollow = "https://www.instagram.com/web/friendships/%s/unfollow/"
@@ -194,7 +193,7 @@ class InstaBot:
                       "Check your login data!")
                 return False
             else:
-                successfulLogin = False
+                successfulLogin = True
 
         except Exception as exc:
             print("Logout fail!")
