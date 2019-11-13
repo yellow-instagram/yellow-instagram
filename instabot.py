@@ -60,32 +60,28 @@ class InstaBot:
             return False
         successfulLogin = False
         self.s.headers.update({
-            "Accept":
+            "accept":
             "*/*",
-            "Accept-Language":
+            "accept-language":
             'en-US,en;q=0.5',
-            "Accept-Encoding":
+            "accept-encoding":
             "gzip, deflate, br",
-            "Connection":
-            "keep-alive",
-            "Host":
-            "www.instagram.com",
-            "Origin":
+            "origin":
             self.url,
-            "Referer":
+            "referer":
             self.url_auth,
-            "User-Agent":
+            "user-agent":
             self.user_agent,
-            "X-Instagram-AJAX":
+            "x-instagram-ajax":
             "1",
-            "Content-Type":
+            "content-type":
             "application/x-www-form-urlencoded",
-            "X-Requested-With":
+            "x-requested-with":
             "XMLHttpRequest",
         })
         try:
             csrf_token = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
-            self.s.headers.update({"X-CSRFToken": csrf_token})
+            self.s.headers.update({"x-csrftoken": csrf_token})
             time.sleep(5 * random.random())
             username = input("Enter your IG username: ")
             username = username.lower()
@@ -144,9 +140,6 @@ class InstaBot:
                     challenge_csrf_token = re.search(
                         '(?<="csrf_token":")\w+',
                         challenge_request_explore.text).group(0)
-                    rollout_hash = re.search(
-                        '(?<="rollout_hash":")\w+',
-                        challenge_request_explore.text).group(0)
                     print("Receive code by phone or email?")
                     print("Type 0 for phone")
                     print("Make sure your phone is linked to IG account")
@@ -201,10 +194,7 @@ class InstaBot:
                       "Check your login data!")
                 return False
             else:
-                rollout_hash = re.search('(?<="rollout_hash":")\w+',
-                                         r.text).group(0)
-                self.s.headers.update({"X-Instagram-AJAX": rollout_hash})
-                successfulLogin = True
+                successfulLogin = False
 
         except Exception as exc:
             print("Logout fail!")
