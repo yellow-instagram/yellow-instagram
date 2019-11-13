@@ -18,6 +18,7 @@ class InstaBot:
     url_username = 'https://www.instagram.com/graphql/query?query_hash=%s&variables={"user_id":"%s","include_reel":true}'
 
     url = "https://www.instagram.com/"
+    url_auth = "https://www.instagram.com/accounts/login/?source=auth_switcher"
     url_follow = "https://www.instagram.com/web/friendships/%s/follow/"
     url_unfollow = "https://www.instagram.com/web/friendships/%s/unfollow/"
     url_block = "https://www.instagram.com/web/friendships/%s/block/"
@@ -47,7 +48,7 @@ class InstaBot:
     ]
 
     def __init__(self):
-        self.user_agent = random.sample(self.list_ua, 1)[0]
+        self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36"
         self.s = requests.Session()
         self.login_status = False
 
@@ -69,9 +70,9 @@ class InstaBot:
             "Host":
             "www.instagram.com",
             "Origin":
-            "https://www.instagram.com",
+            self.url,
             "Referer":
-            "https://www.instagram.com/",
+            self.url_auth,
             "User-Agent":
             self.user_agent,
             "X-Instagram-AJAX":
@@ -82,7 +83,7 @@ class InstaBot:
             "XMLHttpRequest",
         })
         try:
-            r = self.s.get(self.url)
+            r = self.s.get(self.url_auth)
             if r.status_code != 200:
                 print(func_name, "-->", f"{r}",
                       "Get Token Request not return 200 as status code!")
