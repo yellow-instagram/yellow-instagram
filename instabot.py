@@ -80,7 +80,7 @@ class InstaBot:
             "XMLHttpRequest",
         })
         try:
-            csrf_token = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+            csrf_token = input("token: ")
             self.s.headers.update({"x-csrftoken": csrf_token})
             time.sleep(5 * random.random())
             username = input("Enter your IG username: ")
