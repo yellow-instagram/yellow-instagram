@@ -1,14 +1,8 @@
-'''
-Instruction:
-1. Sign in your gmail account
-2. Click "Open in playground"
-3. Press Play button (ctrl + enter) and then click RUN ANYWAY
-'''
-
 import pandas as pd
 import io
 import requests
 import instabot
+import random
 
 def main():
     bot = instabot.InstaBot()
@@ -26,24 +20,40 @@ def main():
         print("You are suggested to only follow or unfollow 10 accounts per day")
         limit = 10
         
-        follow_list = list(df[(df['following'] == False) & (df['color'] == 'yellow')]['id'])[:limit]
-        unfollow_list = list(df[(df['following'] == True) & (df['color'] == 'blue')]['id'])[:limit]
-        
+        all_follow_list = list(df[(df['following'] == False) & (df['color'] == 'yellow')]['id'])
+        all_unfollow_list = list(df[(df['following'] == True) & (df['color'] == 'blue')]['id'])
+    
         account_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['name']), list(df['id'])))
         
+        follow_list = random.sample(all_follow_list, k = limit if limit < len(all_follow_list) else len(all_follow_list))
+        unfollow_list = random.sample(all_unfollow_list, k = limit if limit < len(all_unfollow_list) else len(all_unfollow_list))
         print("\n----------------------------CHECK----------------------------\n")
-        print("Ready to follow:\n",
+        
+        print("Suggest to follow:\n",
               list(map(lambda x: account_list[x], follow_list)))
-        print("Ready to unfollow:\n",
+        print("Suggest to unfollow:\n",
               list(map(lambda x: account_list[x], unfollow_list)))
-        checked = input("Ready? Type ok. ")
-        if checked.lower() != 'ok':
-            checked = input("Second chance. Type ok. ")
-            if checked.lower() != 'ok':
+        
+        shuffle = input("Shuffle to have other suggestion? [yes/no] ")
+        while shuffle.lower() != 'no':
+            if shuffle.lower() == 'yes':
+                follow_list = random.sample(all_follow_list, k = limit if limit < len(all_follow_list) else len(all_follow_list))
+                unfollow_list = random.sample(all_unfollow_list, k = limit if limit < len(all_unfollow_list) else len(all_unfollow_list))
+                print("\nSuggest to follow:\n",
+                      list(map(lambda x: account_list[x], follow_list)))
+                print("Suggest to unfollow:\n",
+                  list(map(lambda x: account_list[x], unfollow_list)))
+            shuffle = input("Shuffle to have other suggestion? [yes/no] ")
+        
+        checked = input("Ready? [yes/no] ")
+        while checked.lower() != 'yes':
+            if checked.lower() == 'no':
                 print("\n---------------------------RESULTS---------------------------\n")
                 bot.logout()
                 print("\n-----------------------------END-----------------------------\n")
                 return
+            checked = input("Ready? [yes/no] ")
+            
         followed = []
         follow_fail = []
         unfollowed = []
