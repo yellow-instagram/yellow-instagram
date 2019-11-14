@@ -24,37 +24,35 @@ def main():
         
         all_follow_list = list(df[(df['following'] == False) & (df['color'] == 'yellow')]['id'])
         all_unfollow_list = list(df[(df['following'] == True) & (df['color'].isin(['blue','green']))]['id'])
-    
-        account_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['name']), list(df['id'])))
         
         follow_list = random.sample(all_follow_list, k = limit if limit < len(all_follow_list) else len(all_follow_list))
         unfollow_list = random.sample(all_unfollow_list, k = limit if limit < len(all_unfollow_list) else len(all_unfollow_list))
         print("\n----------------------------CHECK----------------------------\n")
         
-        print("Suggest to follow:\n",
-              list(map(lambda x: account_list[x], follow_list)))
-        print("Suggest to unfollow:\n",
-              list(map(lambda x: account_list[x], unfollow_list)))
+        print("Suggest to follow:\n")
+        print_list_details(follow_list)
+        print("Suggest to unfollow:\n")
+        print_list_details(unfollow_list)
         
         shuffle = input("Shuffle to have other suggestion? [yes/no] ")
         while shuffle.lower() != 'no':
             if shuffle.lower() == 'yes':
                 follow_list = random.sample(all_follow_list, k = limit if limit < len(all_follow_list) else len(all_follow_list))
                 unfollow_list = random.sample(all_unfollow_list, k = limit if limit < len(all_unfollow_list) else len(all_unfollow_list))
-                print("\nSuggest to follow:\n",
-                      list(map(lambda x: account_list[x], follow_list)))
-                print("Suggest to unfollow:\n",
-                  list(map(lambda x: account_list[x], unfollow_list)))
+                print("\nSuggest to follow:\n")
+                print_list_details(follow_list)
+                print("Suggest to unfollow:\n")
+                print_list_details(unfollow_list)
             shuffle = input("Shuffle to have other suggestion? [yes/no] ")
         
-        checked = input("Ready? [yes/no] ")
+        checked = input("\nReady? [yes/no] ")
         while checked.lower() != 'yes':
             if checked.lower() == 'no':
                 print("\n---------------------------RESULTS---------------------------\n")
                 bot.logout()
                 print("\n-----------------------------END-----------------------------\n")
                 return
-            checked = input("Ready? [yes/no] ")
+            checked = input("\nReady? [yes/no] ")
             
         followed = []
         follow_fail = []
@@ -77,15 +75,14 @@ def main():
         send_google_form(bot.user_id, followed, unfollowed)
 
         print("\n---------------------------RESULTS---------------------------\n")
-        print("Successfully followed:\n",
-              list(map(lambda x: account_list[x], followed)))
-        print("Successfully unfollowed:\n",
-              list(map(lambda x: account_list[x], unfollowed)))
-        print("")
-        print("Fail to follow:\n",
-              list(map(lambda x: account_list[x], follow_fail)))
-        print("Fail to unfollow:\n",
-              list(map(lambda x: account_list[x], unfollow_fail)))
+        print("Successfully followed:\n")
+        print_list_details(followed)
+        print("Successfully unfollowed:\n")
+        print_list_details(unfollowed)
+        print("\nFail to follow:\n")
+        print_list_details(follow_fail)
+        print("Fail to unfollow:\n")
+        print_list_details(unfollow_fail)
         print("")
         bot.logout()
     else:
@@ -118,6 +115,15 @@ def send_google_form(userid, follow, unfollow):
         "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.52 Safari/537.36"
     }
     requests.post(url, data=form_data, headers=user_agent)
+    return True
+
+
+def print_list_details(ids, df):
+    account_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['name']), list(df['id'])))
+    type_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['type']), list(df['id'])))
+    remarks_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['remarks']), list(df['id'])))
+    for i in ids:
+        print("[%s : %s]" % (remarks_list[i], account_list[i]))
     return True
 
 
