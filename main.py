@@ -19,8 +19,8 @@ def main():
             bot.get_username_by_user_id)
         df['following'] = df['id'].apply(lambda x: x in bot.following)
 
-        print("You are suggested to only follow or unfollow 10 accounts per day")
         limit = 10
+        print(f"You are advised to follow/unfollow at most {limit} accounts here per day")
         
         all_follow_list = list(df[(df['following'] == False) & (df['color'] == 'yellow')]['id'])
         all_unfollow_list = list(df[(df['following'] == True) & (df['color'].isin(['blue','green']))]['id'])
@@ -29,21 +29,21 @@ def main():
         unfollow_list = random.sample(all_unfollow_list, k = limit if limit < len(all_unfollow_list) else len(all_unfollow_list))
         print("\n----------------------------CHECK----------------------------\n")
         
-        print("\nSuggest to follow:\n")
+        print("\nAdvised to follow:\n")
         print_list_details(follow_list, df)
-        print("\nSuggest to unfollow:\n")
+        print("\nAdvised to unfollow:\n")
         print_list_details(unfollow_list, df)
         
-        shuffle = input("\nShuffle to have other suggestion? [yes/no] ")
+        shuffle = input("\nShuffle for other choices? [yes/no] ")
         while shuffle.lower() != 'no':
             if shuffle.lower() == 'yes':
                 follow_list = random.sample(all_follow_list, k = limit if limit < len(all_follow_list) else len(all_follow_list))
                 unfollow_list = random.sample(all_unfollow_list, k = limit if limit < len(all_unfollow_list) else len(all_unfollow_list))
-                print("\nSuggest to follow:\n")
+                print("\nAdvised to follow:\n")
                 print_list_details(follow_list, df)
-                print("\nSuggest to unfollow:\n")
+                print("\nAdvised to unfollow:\n")
                 print_list_details(unfollow_list, df)
-            shuffle = input("\nShuffle to have other suggestion? [yes/no] ")
+            shuffle = input("\nShuffle for other choices? [yes/no] ")
         
         checked = input("\nReady? [yes/no] ")
         while checked.lower() != 'yes':
