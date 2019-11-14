@@ -317,7 +317,7 @@ class InstaBot:
             self.user_id = None
             self.login_status = False
             self.following = None
-            print("Logout success!")
+            print("\nLogout success!")
             return True
         except Exception as exc:
             print("Logout fail!")
