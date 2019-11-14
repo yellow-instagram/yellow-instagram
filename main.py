@@ -15,13 +15,15 @@ def main():
         df = df_from_sheet()
         df.loc[df['id'].isnull(), 'id'] = df.loc[df['id'].isnull(), 'name'].apply(
             bot.get_user_id_by_username)
+        df.loc[df['name'].isnull(), 'name'] = df.loc[df['name'].isnull(), 'id'].apply(
+            bot.get_username_by_user_id)
         df['following'] = df['id'].apply(lambda x: x in bot.following)
 
         print("You are suggested to only follow or unfollow 10 accounts per day")
         limit = 10
         
         all_follow_list = list(df[(df['following'] == False) & (df['color'] == 'yellow')]['id'])
-        all_unfollow_list = list(df[(df['following'] == True) & (df['color'] == 'blue')]['id'])
+        all_unfollow_list = list(df[(df['following'] == True) & (df['color'].isin(['blue','green']))]['id'])
     
         account_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['name']), list(df['id'])))
         
@@ -93,7 +95,7 @@ def main():
 
 def df_from_sheet():
     sheet = requests.get(
-        'https://docs.google.com/spreadsheets/d/1eKCbv2-1_jtRtefeAj9sZKQKsr_EySf8vPdq2NPaIlY/gviz/tq?&tqx=out:csv&sheet={blue}'
+        'https://docs.google.com/spreadsheets/d/1eKCbv2-1_jtRtefeAj9sZKQKsr_EySf8vPdq2NPaIlY/gviz/tq?&tqx=out:csv&sheet={sheet1}'
     )
     df = pd.read_csv(io.StringIO(sheet.text))
     df['id'] = df['id'].astype(str)
@@ -117,6 +119,21 @@ def send_google_form(userid, follow, unfollow):
     }
     requests.post(url, data=form_data, headers=user_agent)
     return True
+
+
+def ig_to_list():
+    blue = instabot.InstaBot()
+    blue.login()
+    yellow = instabot.InstaBot()
+    yellow.login()
+    df=df_from_sheet()
+    bot = instabot.InstaBot()
+    missing_blue=dict(map(lambda x: (x, bot.get_username_by_user_id(x)), set(blue.following) - set(df.id)))
+    missing_yellow=dict(map(lambda x: (x, bot.get_username_by_user_id(x)), set(yellow.following) - set(df.id)))
+    for i in missing_blue:
+        print(missing_blue[i],i,"blue")
+    for i in missing_yellow:
+        print(missing_yellow[i],"yellow")
 
 
 if __name__ == '__main__':
