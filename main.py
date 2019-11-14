@@ -29,21 +29,21 @@ def main():
         unfollow_list = random.sample(all_unfollow_list, k = limit if limit < len(all_unfollow_list) else len(all_unfollow_list))
         print("\n----------------------------CHECK----------------------------\n")
         
-        print("Suggest to follow:\n")
+        print("\nSuggest to follow:\n")
         print_list_details(follow_list, df)
-        print("Suggest to unfollow:\n")
+        print("\nSuggest to unfollow:\n")
         print_list_details(unfollow_list, df)
         
-        shuffle = input("Shuffle to have other suggestion? [yes/no] ")
+        shuffle = input("\nShuffle to have other suggestion? [yes/no] ")
         while shuffle.lower() != 'no':
             if shuffle.lower() == 'yes':
                 follow_list = random.sample(all_follow_list, k = limit if limit < len(all_follow_list) else len(all_follow_list))
                 unfollow_list = random.sample(all_unfollow_list, k = limit if limit < len(all_unfollow_list) else len(all_unfollow_list))
                 print("\nSuggest to follow:\n")
                 print_list_details(follow_list, df)
-                print("Suggest to unfollow:\n")
+                print("\nSuggest to unfollow:\n")
                 print_list_details(unfollow_list, df)
-            shuffle = input("Shuffle to have other suggestion? [yes/no] ")
+            shuffle = input("\nShuffle to have other suggestion? [yes/no] ")
         
         checked = input("\nReady? [yes/no] ")
         while checked.lower() != 'yes':
@@ -75,13 +75,13 @@ def main():
         send_google_form(bot.user_id, followed, unfollowed)
 
         print("\n---------------------------RESULTS---------------------------\n")
-        print("Successfully followed:\n")
+        print("\nSuccessfully followed:\n")
         print_list_details(followed, df)
-        print("Successfully unfollowed:\n")
+        print("\nSuccessfully unfollowed:\n")
         print_list_details(unfollowed, df)
         print("\nFail to follow:\n")
         print_list_details(follow_fail, df)
-        print("Fail to unfollow:\n")
+        print("\nFail to unfollow:\n")
         print_list_details(unfollow_fail, df)
         print("")
         bot.logout()
@@ -122,6 +122,8 @@ def print_list_details(ids, df):
     account_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['name']), list(df['id'])))
     type_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['type']), list(df['id'])))
     remarks_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['remarks']), list(df['id'])))
+    if len(ids) == 0:
+        print("No suggestion")
     for i in ids:
         print("[%s : %s]" % (remarks_list[i], account_list[i]))
     return True
