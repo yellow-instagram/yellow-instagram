@@ -30,9 +30,9 @@ def main():
         print("\n----------------------------CHECK----------------------------\n")
         
         print("Suggest to follow:\n")
-        print_list_details(follow_list)
+        print_list_details(follow_list, df)
         print("Suggest to unfollow:\n")
-        print_list_details(unfollow_list)
+        print_list_details(unfollow_list, df)
         
         shuffle = input("Shuffle to have other suggestion? [yes/no] ")
         while shuffle.lower() != 'no':
@@ -40,9 +40,9 @@ def main():
                 follow_list = random.sample(all_follow_list, k = limit if limit < len(all_follow_list) else len(all_follow_list))
                 unfollow_list = random.sample(all_unfollow_list, k = limit if limit < len(all_unfollow_list) else len(all_unfollow_list))
                 print("\nSuggest to follow:\n")
-                print_list_details(follow_list)
+                print_list_details(follow_list, df)
                 print("Suggest to unfollow:\n")
-                print_list_details(unfollow_list)
+                print_list_details(unfollow_list, df)
             shuffle = input("Shuffle to have other suggestion? [yes/no] ")
         
         checked = input("\nReady? [yes/no] ")
@@ -76,13 +76,13 @@ def main():
 
         print("\n---------------------------RESULTS---------------------------\n")
         print("Successfully followed:\n")
-        print_list_details(followed)
+        print_list_details(followed, df)
         print("Successfully unfollowed:\n")
-        print_list_details(unfollowed)
+        print_list_details(unfollowed, df)
         print("\nFail to follow:\n")
-        print_list_details(follow_fail)
+        print_list_details(follow_fail, df)
         print("Fail to unfollow:\n")
-        print_list_details(unfollow_fail)
+        print_list_details(unfollow_fail, df)
         print("")
         bot.logout()
     else:
