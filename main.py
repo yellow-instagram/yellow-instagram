@@ -8,7 +8,7 @@ def main():
     bot = instabot.InstaBot()
     bot.login()
     print(
-        "\n----------------------------START----------------------------\n"
+        "\n----------------------FIGHT FOR FREEDOM----------------------\n"
     )
     if bot.login_status:
 
@@ -49,8 +49,9 @@ def main():
         while checked.lower() != 'yes':
             if checked.lower() == 'no':
                 print("\n---------------------------RESULTS---------------------------\n")
+                print("")
                 bot.logout()
-                print("\n-----------------------------END-----------------------------\n")
+                print("\n------------------------STAND WITH HK------------------------\n")
                 return
             checked = input("\nReady? [yes/no] ")
             
@@ -87,7 +88,7 @@ def main():
         bot.logout()
     else:
         print("Login failed.")
-    print("\n-----------------------------END-----------------------------\n")
+    print("\n------------------------STAND WITH HK------------------------\n")
 
 
 def df_from_sheet():
@@ -123,7 +124,7 @@ def print_list_details(ids, df):
     type_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['type']), list(df['id'])))
     remarks_list = dict(map(lambda x: (x, df[df['id'] == x].iloc[0]['remarks']), list(df['id'])))
     if len(ids) == 0:
-        print("No suggestion")
+        print("N/A")
     for i in ids:
         print("[%s : %s]" % (remarks_list[i], account_list[i]))
     return True
